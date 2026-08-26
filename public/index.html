@@ -1,253 +1,28 @@
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Launchpad & Store</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-slate-900 text-slate-100 font-sans antialiased">
+<!-- NAVIGATION -->
+<nav class="fixed top-0 w-full bg-slate-900/80 backdrop-blur-md border-b border-slate-800 z-50">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+        <a href="index.html" class="text-xl font-bold text-white tracking-tight">Brand<span class="text-indigo-500">.</span></a>
+        
+        <div class="hidden md:flex space-x-8 text-sm font-medium text-slate-400">
+            <a href="#products" class="hover:text-white transition">Products</a>
+            <a href="#features" class="hover:text-white transition">Features</a>
+            <a href="#pricing" class="hover:text-white transition">Pricing</a>
+            <a href="#contact" class="hover:text-white transition">Contact</a>
+        </div>
 
-    <!-- NAVIGATION -->
-    <nav class="fixed top-0 w-full bg-slate-900/80 backdrop-blur-md border-b border-slate-800 z-50">
-        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-xl font-bold text-white tracking-tight">Brand<span class="text-indigo-500">.</span></a>
-            <div class="hidden md:flex space-x-8 text-sm font-medium text-slate-400">
-                <a href="#products" class="hover:text-white transition">Products</a>
-                <a href="#features" class="hover:text-white transition">Features</a>
-                <a href="#pricing" class="hover:text-white transition">Pricing</a>
-                <a href="#contact" class="hover:text-white transition">Contact</a>
-            </div>
-            <div class="flex items-center space-x-4">
-                <!-- Cart Counter -->
-                <button onclick="alert('Cart functionality clicked!')" class="relative bg-slate-800 hover:bg-slate-700 text-slate-200 p-2.5 rounded-lg border border-slate-700 transition flex items-center justify-center">
-                    🛒
-                    <span id="cart-count" class="absolute -top-2 -right-2 bg-indigo-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
-                </button>
-                <a href="#products" class="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">Shop Now</a>
+        <div class="flex items-center space-x-4">
+            <!-- Cart Counter -->
+            <button onclick="alert('Cart functionality clicked!')" class="relative bg-slate-800 hover:bg-slate-700 text-slate-200 p-2 rounded-lg border border-slate-700 transition flex items-center justify-center">
+                🛒
+                <span id="cart-count" class="absolute -top-2 -right-2 bg-indigo-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
+            </button>
+
+            <!-- Dynamic Account / Auth Button -->
+            <div id="auth-nav-container">
+                <a href="auth.html" id="auth-btn" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-4 py-2 rounded-lg transition">
+                    Sign In / Log In 👤
+                </a>
             </div>
         </div>
-    </nav>
-
-    <!-- HERO SECTION -->
-    <section class="pt-32 pb-16 px-6 text-center max-w-4xl mx-auto">
-        <span class="text-indigo-400 text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full bg-indigo-950/60 border border-indigo-800">
-            Next Generation Marketplace
-        </span>
-        <h1 class="text-4xl sm:text-6xl font-extrabold text-white mt-6 tracking-tight leading-tight">
-            Premium products designed for modern workflows.
-        </h1>
-        <p class="text-slate-400 text-lg mt-6 max-w-2xl mx-auto">
-            Explore our curated collection of high-performance gear, digital tools, and workspace essentials.
-        </p>
-        <div class="mt-8 flex justify-center gap-4">
-            <a href="#products" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-6 py-3 rounded-xl transition shadow-lg shadow-indigo-600/30">Browse Products 👇</a>
-            <a href="#features" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold px-6 py-3 rounded-xl transition border border-slate-700">Learn More</a>
-        </div>
-    </section>
-
-    <!-- PRODUCTS SECTION -->
-    <section id="products" class="py-16 bg-slate-950/50 border-y border-slate-800">
-        <div class="max-w-6xl mx-auto px-6">
-            
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
-                <div>
-                    <h2 class="text-3xl font-bold text-white">Featured Products</h2>
-                    <p class="text-slate-400 mt-1">Handpicked quality goods delivered directly to you.</p>
-                </div>
-                <!-- Category Filter Buttons -->
-                <div class="flex space-x-2 overflow-x-auto pb-2 md:pb-0">
-                    <button onclick="filterCategory('all')" class="cat-btn bg-indigo-600 text-white text-xs font-semibold px-4 py-2 rounded-lg transition">All Items</button>
-                    <button onclick="filterCategory('hardware')" class="cat-btn bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold px-4 py-2 rounded-lg border border-slate-700 transition">Hardware</button>
-                    <button onclick="filterCategory('accessories')" class="cat-btn bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold px-4 py-2 rounded-lg border border-slate-700 transition">Accessories</button>
-                </div>
-            </div>
-
-            <!-- Product Cards Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                
-                <!-- Product Card 1 -->
-                <div class="product-card hardware bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden flex flex-col justify-between hover:border-slate-700 transition">
-                    <div>
-                        <div class="relative bg-slate-800 h-48 flex items-center justify-center overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&auto=format&fit=crop&q=80" alt="Headphones" class="w-full h-full object-cover hover:scale-105 transition duration-300">
-                            <span class="absolute top-3 left-3 bg-indigo-600 text-white text-[10px] font-bold px-2 py-1 rounded">Best Seller</span>
-                        </div>
-                        <div class="p-6">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs text-indigo-400 font-semibold uppercase">Hardware</span>
-                                <span class="text-xs text-amber-400 font-bold">★ 4.9 (128)</span>
-                            </div>
-                            <h3 class="text-lg font-bold text-white">Pro Wireless Headphones</h3>
-                            <p class="text-slate-400 text-sm mt-2">Active noise-canceling headphones with 40-hour battery life and spatial audio.</p>
-                        </div>
-                    </div>
-                    <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-slate-800/50 mt-4">
-                        <span class="text-xl font-extrabold text-white">$249.00</span>
-                        <button onclick="addToCart('Pro Wireless Headphones')" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition shadow-md shadow-indigo-600/20">Add to Cart 🛒</button>
-                    </div>
-                </div>
-
-                <!-- Product Card 2 -->
-                <div class="product-card accessories bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden flex flex-col justify-between hover:border-slate-700 transition">
-                    <div>
-                        <div class="relative bg-slate-800 h-48 flex items-center justify-center overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=600&auto=format&fit=crop&q=80" alt="Mechanical Keyboard" class="w-full h-full object-cover hover:scale-105 transition duration-300">
-                        </div>
-                        <div class="p-6">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs text-indigo-400 font-semibold uppercase">Hardware</span>
-                                <span class="text-xs text-amber-400 font-bold">★ 4.8 (94)</span>
-                            </div>
-                            <h3 class="text-lg font-bold text-white">Custom Mechanical Keyboard</h3>
-                            <p class="text-slate-400 text-sm mt-2">Compact 75% layout with hot-swappable switches and custom RGB backlight.</p>
-                        </div>
-                    </div>
-                    <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-slate-800/50 mt-4">
-                        <span class="text-xl font-extrabold text-white">$129.00</span>
-                        <button onclick="addToCart('Custom Mechanical Keyboard')" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition shadow-md shadow-indigo-600/20">Add to Cart 🛒</button>
-                    </div>
-                </div>
-
-                <!-- Product Card 3 -->
-                <div class="product-card accessories bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden flex flex-col justify-between hover:border-slate-700 transition">
-                    <div>
-                        <div class="relative bg-slate-800 h-48 flex items-center justify-center overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=600&auto=format&fit=crop&q=80" alt="Ergonomic Mouse" class="w-full h-full object-cover hover:scale-105 transition duration-300">
-                            <span class="absolute top-3 left-3 bg-emerald-600 text-white text-[10px] font-bold px-2 py-1 rounded">New</span>
-                        </div>
-                        <div class="p-6">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs text-indigo-400 font-semibold uppercase">Accessories</span>
-                                <span class="text-xs text-amber-400 font-bold">★ 4.7 (52)</span>
-                            </div>
-                            <h3 class="text-lg font-bold text-white">Precision Ergonomic Mouse</h3>
-                            <p class="text-slate-400 text-sm mt-2">Ultra-lightweight wireless mouse designed for high efficiency and wrist comfort.</p>
-                        </div>
-                    </div>
-                    <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-slate-800/50 mt-4">
-                        <span class="text-xl font-extrabold text-white">$79.00</span>
-                        <button onclick="addToCart('Precision Ergonomic Mouse')" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition shadow-md shadow-indigo-600/20">Add to Cart 🛒</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- FEATURES SECTION -->
-    <section id="features" class="py-20 max-w-6xl mx-auto px-6">
-        <div class="text-center max-w-xl mx-auto mb-16">
-            <h2 class="text-3xl font-bold text-white">Why shop with us</h2>
-            <p class="text-slate-400 mt-2">High standard production and global support built-in.</p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-slate-900 p-8 rounded-2xl border border-slate-800">
-                <div class="w-10 h-10 bg-indigo-600/10 text-indigo-400 flex items-center justify-center rounded-lg text-xl mb-4">🚀</div>
-                <h3 class="text-lg font-bold text-white mb-2">Fast Worldwide Shipping</h3>
-                <p class="text-slate-400 text-sm">Dispatched within 24 hours with real-time tracking updates.</p>
-            </div>
-            <div class="bg-slate-900 p-8 rounded-2xl border border-slate-800">
-                <div class="w-10 h-10 bg-indigo-600/10 text-indigo-400 flex items-center justify-center rounded-lg text-xl mb-4">🛡️</div>
-                <h3 class="text-lg font-bold text-white mb-2">2-Year Warranty</h3>
-                <p class="text-slate-400 text-sm">All hardware items come with a comprehensive replacement guarantee.</p>
-            </div>
-            <div class="bg-slate-900 p-8 rounded-2xl border border-slate-800">
-                <div class="w-10 h-10 bg-indigo-600/10 text-indigo-400 flex items-center justify-center rounded-lg text-xl mb-4">🔄</div>
-                <h3 class="text-lg font-bold text-white mb-2">30-Day Free Returns</h3>
-                <p class="text-slate-400 text-sm">Not completely satisfied? Return your order hassle-free within 30 days.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- PRICING SECTION -->
-    <section id="pricing" class="py-20 bg-slate-950/50 border-t border-slate-800">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center max-w-xl mx-auto mb-16">
-                <h2 class="text-3xl font-bold text-white">Membership Plans</h2>
-                <p class="text-slate-400 mt-2">Unlock free shipping and exclusive product discounts.</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <div class="bg-slate-900 p-8 rounded-2xl border border-slate-800 flex flex-col justify-between">
-                    <div>
-                        <h3 class="text-xl font-bold text-white">Standard Pass</h3>
-                        <p class="text-slate-400 text-sm mt-1">Free community access.</p>
-                        <div class="text-4xl font-extrabold text-white my-6">$0 <span class="text-base font-normal text-slate-500">/mo</span></div>
-                        <ul class="space-y-3 text-sm text-slate-400 mb-8">
-                            <li class="flex items-center">✓ Standard shipping rates</li>
-                            <li class="flex items-center">✓ Standard customer support</li>
-                        </ul>
-                    </div>
-                    <a href="#contact" class="w-full text-center bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 rounded-xl transition border border-slate-700">Sign Up Free</a>
-                </div>
-                <div class="bg-slate-900 p-8 rounded-2xl border-2 border-indigo-500 relative flex flex-col justify-between">
-                    <span class="absolute -top-3 right-6 bg-indigo-500 text-white text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full">VIP Member</span>
-                    <div>
-                        <h3 class="text-xl font-bold text-white">Pro VIP</h3>
-                        <p class="text-slate-400 text-sm mt-1">Exclusive perks and early drops.</p>
-                        <div class="text-4xl font-extrabold text-white my-6">$15 <span class="text-base font-normal text-slate-500">/mo</span></div>
-                        <ul class="space-y-3 text-sm text-slate-400 mb-8">
-                            <li class="flex items-center">✓ Free express worldwide shipping</li>
-                            <li class="flex items-center">✓ 15% discount on all store items</li>
-                            <li class="flex items-center">✓ Early access to new hardware releases</li>
-                        </ul>
-                    </div>
-                    <a href="#contact" class="w-full text-center bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 rounded-xl transition shadow-lg shadow-indigo-600/30">Join VIP Club</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CONTACT SECTION -->
-    <section id="contact" class="py-20">
-        <div class="max-w-xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-white text-center">Contact Support</h2>
-            <p class="text-slate-400 text-center mt-2 mb-8">Have a question about an item or your order?</p>
-            <form onsubmit="event.preventDefault(); alert('Message sent!');" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Name</label>
-                    <input type="text" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-slate-200 focus:outline-none focus:border-indigo-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Email</label>
-                    <input type="email" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-slate-200 focus:outline-none focus:border-indigo-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Message</label>
-                    <textarea rows="4" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-slate-200 focus:outline-none focus:border-indigo-500"></textarea>
-                </div>
-                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 rounded-xl transition">Submit Request</button>
-            </form>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="py-8 border-t border-slate-800 text-center text-xs text-slate-500">
-        <p>&copy; 2026 Brand Inc. All rights reserved.</p>
-    </footer>
-
-    <!-- INTERACTIVE JAVASCRIPT -->
-    <script>
-        let cartCount = 0;
-
-        function addToCart(productName) {
-            cartCount++;
-            document.getElementById('cart-count').innerText = cartCount;
-            alert(`Added "${productName}" to your cart!`);
-        }
-
-        function filterCategory(category) {
-            const cards = document.querySelectorAll('.product-card');
-            cards.forEach(card => {
-                if (category === 'all' || card.classList.contains(category)) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-    </script>
-
-</body>
-</html>
+    </div>
+</nav>
