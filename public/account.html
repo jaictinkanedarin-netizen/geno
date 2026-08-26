@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - Community Marketplace</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased">
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex justify-between items-center">
+            <a href="index.html" class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                Brand<span class="text-indigo-500">.</span>
+            </a>
+            <nav class="flex items-center gap-6 text-sm font-medium text-slate-400">
+                <a href="index.html" class="hover:text-white transition">Products</a>
+                <a href="account.html" class="text-indigo-400 font-semibold">My Account</a>
+                <button onclick="handleLogout()" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 px-3 py-1.5 rounded-lg border border-red-500/20 transition text-xs font-semibold">
+                    Log Out
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-4xl mx-auto px-6 py-10 w-full flex-1 space-y-8">
+        
+        <!-- PROFILE CARD -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 shadow-xl">
+            <div class="space-y-2">
+                <span class="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-xs font-semibold px-3 py-1 rounded-full inline-block">
+                    Active Session
+                </span>
+                <h1 class="text-2xl font-bold text-white">My Account</h1>
+                <p class="text-sm text-slate-400">Logged in as: <span id="user-email" class="text-slate-200 font-medium">Loading...</span></p>
+                <p class="text-xs text-slate-500 font-mono">ID: <span id="user-id">...</span></p>
+            </div>
+
+            <button onclick="handleLogout()" class="bg-red-600 hover:bg-red-500 text-white font-medium px-5 py-2.5 rounded-xl transition text-sm shadow-lg shadow-red-600/20">
+                Log Out
+            </button>
+        </div>
+
+        <!-- USER LISTINGS SECTION -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                <div>
+                    <h2 class="text-xl font-bold text-white">My Listed Items</h2>
+                    <p class="text-xs text-slate-400">Products you have posted to the marketplace.</p>
+                </div>
+                <a href="index.html" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-4 py-2 rounded-xl text-xs transition shadow-lg shadow-indigo-600/20">
+                    + Create Listing
+                </a>
+            </div>
+
+            <!-- PRODUCT GRID -->
+            <div id="my-products-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <p class="text-xs text-slate-500 col-span-full">Fetching your product listings...</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-900 py-6 text-center text-xs text-slate-600">
+        © 2026 Brand Inc. All rights reserved.
+    </footer>
+
+    <!-- SUPABASE LOGIC -->
+    <script>
+        // UPDATE THESE WITH YOUR NEW GEON/GENO-THREE SUPABASE KEYS:
+        const SUPABASE_URL = "https://aotvvblbxmilkzuzzhme.supabase.co";
+        const SUPABASE_ANON_KEY = "YOUR_NEW_PUBLISHABLE_ANON_KEY_HERE";
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let currentUser = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Check active session
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            
+            if (!session) {
+                alert("Please log in to view your account.");
+                window.location.href = 'auth.html';
+                return;
+            }
+
+            currentUser = session.user;
+            document.getElementById('user-email').textContent = currentUser.email;
+            document.getElementById('user-id').textContent = currentUser.id;
+
+            fetchMyProducts();
+        });
+
+        // LOG OUT FUNCTION
+        async function handleLogout() {
+            const { error } = await supabaseClient.auth.signOut();
+            if (!error) {
+                window.location.href = 'auth.html';
+            } else {
+                alert("Logout Error: " + error.message);
+            }
+        }
+
+        // FETCH USER'S OWN PRODUCTS
+        async function fetchMyProducts() {
+            const { data, error } = await supabaseClient
+                .from('products')
+                .select('*')
+                .eq('seller_id', currentUser.id);
+
+            const container = document.getElementById('my-products-list');
+            container.innerHTML = '';
+
+            if (error) {
+                container.innerHTML = `<p class="text-xs text-red-400 col-span-full">Error loading products: ${error.message}</p>`;
+                return;
+            }
+
+            if (!data || data.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 col-span-full">You haven't posted any listings yet.</p>`;
+                return;
+            }
+
+            data.forEach(p => {
+                const card = document.createElement('div');
+                card.className = "flex items-center gap-4 bg-slate-950 p-3 rounded-xl border border-slate-800";
+                card.innerHTML = `
+                    <img src="${p.image_url || 'https://via.placeholder.com/150'}" alt="${p.title}" class="w-14 h-14 object-cover rounded-lg border border-slate-800">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-semibold text-white text-sm truncate">${p.title}</h4>
+                        <p class="text-xs font-bold text-indigo-400">$${parseFloat(p.price).toFixed(2)}</p>
+                    </div>
+                    <button onclick="deleteProduct('${p.id}')" class="text-xs font-medium text-red-400 hover:text-red-300 bg-red-500/10 hover:bg-red-500/20 px-3 py-1.5 rounded-lg border border-red-500/20 transition">
+                        Delete
+                    </button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // DELETE PRODUCT FUNCTION
+        async function deleteProduct(productId) {
+            if (!confirm("Are you sure you want to remove this item?")) return;
+
+            const { error } = await supabaseClient.from('products').delete().eq('id', productId);
+            if (!error) {
+                fetchMyProducts();
+            } else {
+                alert("Could not delete item: " + error.message);
+            }
+        }
+    </script>
+</body>
+</html>
