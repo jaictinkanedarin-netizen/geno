@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account - Sign Up / Log In</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between">
+
+    <!-- NAVIGATION -->
+    <nav class="w-full bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-xl font-bold text-white tracking-tight">Brand<span class="text-indigo-500">.</span></a>
+            <a href="index.html" class="text-sm font-semibold text-slate-400 hover:text-white transition">← Back to Home</a>
+        </div>
+    </nav>
+
+    <!-- AUTH CONTAINER -->
+    <main class="flex-1 flex items-center justify-center p-6">
+        <div class="w-full max-w-md bg-slate-950 p-8 rounded-2xl border border-slate-800 shadow-xl">
+            
+            <!-- TOGGLE BUTTONS -->
+            <div class="flex border-b border-slate-800 mb-6">
+                <button id="tab-signup" onclick="toggleAuthMode('signup')" class="w-1/2 py-2 text-center font-semibold text-indigo-400 border-b-2 border-indigo-500 transition">
+                    Sign Up
+                </button>
+                <button id="tab-login" onclick="toggleAuthMode('login')" class="w-1/2 py-2 text-center font-semibold text-slate-400 hover:text-slate-200 border-b-2 border-transparent transition">
+                    Log In
+                </button>
+            </div>
+
+            <!-- MESSAGES -->
+            <div id="auth-alert" class="hidden mb-4 p-3 rounded-lg text-xs font-semibold"></div>
+
+            <!-- AUTH FORM -->
+            <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-4">
+                <div id="field-name">
+                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Full Name</label>
+                    <input type="text" id="auth-name" placeholder="Jane Doe" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-slate-200 focus:outline-none focus:border-indigo-500 text-sm">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Email Address</label>
+                    <input type="email" id="auth-email" required placeholder="name@example.com" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-slate-200 focus:outline-none focus:border-indigo-500 text-sm">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Password</label>
+                    <input type="password" id="auth-password" required minlength="6" placeholder="••••••••" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-slate-200 focus:outline-none focus:border-indigo-500 text-sm">
+                </div>
+
+                <button type="submit" id="submit-btn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 rounded-xl transition shadow-lg shadow-indigo-600/30">
+                    Create Account
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="py-6 border-t border-slate-800 text-center text-xs text-slate-500">
+        <p>&copy; 2026 Brand Inc. All rights reserved.</p>
+    </footer>
+
+    <!-- JAVASCRIPT AUTH ENGINE -->
+    <script>
+        // Supabase Credentials
+        const SUPABASE_URL = "https://vlbtdmobfohoonzpflgq.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_QyXlBe0KPgctz8JrsJ6OKA_Ui1PPgex";
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let currentMode = 'signup';
+
+        function toggleAuthMode(mode) {
+            currentMode = mode;
+            const nameField = document.getElementById('field-name');
+            const submitBtn = document.getElementById('submit-btn');
+            const tabSignup = document.getElementById('tab-signup');
+            const tabLogin = document.getElementById('tab-login');
+            
+            hideAlert();
+
+            if (mode === 'signup') {
+                nameField.classList.remove('hidden');
+                submitBtn.innerText = 'Create Account';
+                tabSignup.className = 'w-1/2 py-2 text-center font-semibold text-indigo-400 border-b-2 border-indigo-500 transition';
+                tabLogin.className = 'w-1/2 py-2 text-center font-semibold text-slate-400 hover:text-slate-200 border-b-2 border-transparent transition';
+            } else {
+                nameField.classList.add('hidden');
+                submitBtn.innerText = 'Log In';
+                tabLogin.className = 'w-1/2 py-2 text-center font-semibold text-indigo-400 border-b-2 border-indigo-500 transition';
+                tabSignup.className = 'w-1/2 py-2 text-center font-semibold text-slate-400 hover:text-slate-200 border-b-2 border-transparent transition';
+            }
+        }
+
+        async function handleAuthSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('auth-email').value;
+            const password = document.getElementById('auth-password').value;
+            const fullName = document.getElementById('auth-name').value;
+
+            if (currentMode === 'signup') {
+                const { data, error } = await supabaseClient.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: { full_name: fullName }
+                    }
+                });
+
+                if (error) {
+                    showAlert(error.message, 'error');
+                } else {
+                    showAlert('Account created! Please check your email for confirmation, or try logging in.', 'success');
+                }
+            } else {
+                const { data, error } = await supabaseClient.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+
+                if (error) {
+                    showAlert(error.message, 'error');
+                } else {
+                    showAlert('Logged in successfully! Redirecting...', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1200);
+                }
+            }
+        }
+
+        function showAlert(msg, type) {
+            const alertBox = document.getElementById('auth-alert');
+            alertBox.classList.remove('hidden', 'bg-red-950', 'text-red-300', 'border-red-800', 'bg-emerald-950', 'text-emerald-300', 'border-emerald-800');
+            
+            if (type === 'error') {
+                alertBox.classList.add('bg-red-950', 'text-red-300', 'border', 'border-red-800');
+            } else {
+                alertBox.classList.add('bg-emerald-950', 'text-emerald-300', 'border', 'border-emerald-800');
+            }
+            alertBox.innerText = msg;
+        }
+
+        function hideAlert() {
+            document.getElementById('auth-alert').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
