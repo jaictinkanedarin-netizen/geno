@@ -8,16 +8,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Supabase JS Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <!-- VOICEFLOW CHATBOT POSITIONING FIX -->
-    <style>
-      #voiceflow-chat {
-        position: fixed !important;
-        bottom: 20px !important;
-        right: 20px !important;
-        z-index: 9999 !important;
-      }
-    </style>
 </head>
 <body class="bg-slate-900 text-slate-100 font-sans antialiased">
 
@@ -484,12 +474,12 @@
             window.voiceflow.chat.load({
               verify: { projectId: '6a8ff96adaaac9d18e7da1b7' },
               url: 'https://general-runtime.voiceflow.com',
-              voice: {
-                url: 'https://runtime-api.voiceflow.com'
-              }
+              voice: { url: 'https://runtime-api.voiceflow.com' }
             });
-          }
-          v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+          };
+          v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; 
+          v.type = "text/javascript"; 
+          s.parentNode.insertBefore(v, s);
       })(document, 'script');
     </script>
 </body>
