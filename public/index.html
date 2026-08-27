@@ -221,6 +221,50 @@
         const SUPABASE_ANON_KEY = "sb_publishable_kg1IhTH6wQXTBOuYVIfDEw_QXFR3dp9";
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+        // DEFAULT PRE-LOADED PRODUCTS
+        const defaultProducts = [
+            {
+                id: "def-1",
+                title: "Ergonomic Mechanical Keyboard",
+                price: 120.00,
+                seller_name: "TechGear Store",
+                image_url: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=600&q=80",
+                description: "Custom mechanical keyboard with hot-swappable RGB switches and PBT keycaps."
+            },
+            {
+                id: "def-2",
+                title: "Ultra-Wide Curved Monitor 34\"",
+                price: 450.00,
+                seller_name: "Workspace Lab",
+                image_url: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=600&q=80",
+                description: "144Hz 1ms curved gaming monitor with HDR support and ultra-narrow bezels."
+            },
+            {
+                id: "def-3",
+                title: "Wireless Noise-Canceling Headphones",
+                price: 199.00,
+                seller_name: "AudioPhile",
+                image_url: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80",
+                description: "Premium active noise cancelling over-ear headphones with 30-hour battery life."
+            },
+            {
+                id: "def-4",
+                title: "Minimalist Felt Desk Mat",
+                price: 25.00,
+                seller_name: "MinimalSetup",
+                image_url: "https://images.unsplash.com/photo-1616440342903-c45f5a6320a2?auto=format&fit=crop&w=600&q=80",
+                description: "Large 900x400mm anti-slip desk pad designed for smooth mouse control."
+            },
+            {
+                id: "def-5",
+                title: "Adjustable Aluminum Monitor Arm",
+                price: 65.00,
+                seller_name: "ErgoStudio",
+                image_url: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=600&q=80",
+                description: "Heavy-duty gas spring monitor mount with full motion rotation and cable management."
+            }
+        ];
+
         let allProducts = [];
         let cart = [];
 
@@ -273,10 +317,10 @@
                 .select('*')
                 .order('created_at', { ascending: false });
 
-            if (!error && data) {
-                allProducts = data;
+            if (!error && data && data.length > 0) {
+                allProducts = [...data, ...defaultProducts];
             } else {
-                allProducts = [];
+                allProducts = defaultProducts;
             }
             renderProducts(allProducts);
         }
