@@ -66,7 +66,7 @@
             <div class="pt-4 border-t border-slate-800 space-y-4">
                 <div class="flex justify-between items-center text-sm font-bold">
                     <span class="text-slate-400">Total:</span>
-                    <span id="cart-total" class="text-indigo-400 text-xl font-extrabold">$0.00</span>
+                    <span id="cart-total" class="text-indigo-400 text-xl font-extrabold">₱0.00</span>
                 </div>
                 <button onclick="startCheckout()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 rounded-xl transition shadow-lg shadow-indigo-600/20 text-xs uppercase tracking-wider">
                     Proceed to Checkout
@@ -88,7 +88,7 @@
 
             <div class="border-t border-slate-800 pt-3 flex justify-between items-center">
                 <span class="text-xs text-slate-400 font-semibold uppercase">Total Amount:</span>
-                <span id="checkout-modal-total" class="text-xl font-extrabold text-indigo-400">$0.00</span>
+                <span id="checkout-modal-total" class="text-xl font-extrabold text-indigo-400">₱0.00</span>
             </div>
 
             <!-- Checkout Form -->
@@ -99,13 +99,12 @@
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Payment Method</label>
-                    <select class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
-                        <option>Cash on Delivery (COD)</option>
-                        <option>Credit / Debit Card</option>
-                        <option>GCash / E-Wallet</option>
+                    <select id="payment-method-select" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+                        <option value="cod">Cash on Delivery (COD)</option>
+                        <option value="paymongo">PayMongo (GCash, Maya, Cards)</option>
                     </select>
                 </div>
-                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 rounded-xl transition text-xs shadow-lg shadow-indigo-600/20 uppercase tracking-wider">
+                <button type="submit" id="checkout-submit-btn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 rounded-xl transition text-xs shadow-lg shadow-indigo-600/20 uppercase tracking-wider">
                     Confirm & Place Order ✨
                 </button>
             </form>
@@ -167,8 +166,8 @@
                     <input type="text" id="p-title" required placeholder="e.g. Wireless Ergonomic Mouse" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Price ($ USD)</label>
-                    <input type="number" step="0.01" id="p-price" required placeholder="79.00" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Price (₱ PHP)</label>
+                    <input type="number" step="0.01" id="p-price" required placeholder="1500.00" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Image URL</label>
@@ -226,7 +225,7 @@
             {
                 id: "def-1",
                 title: "Ergonomic Mechanical Keyboard",
-                price: 120.00,
+                price: 1200.00,
                 seller_name: "TechGear Store",
                 image_url: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=600&q=80",
                 description: "Custom mechanical keyboard with hot-swappable RGB switches and PBT keycaps."
@@ -234,7 +233,7 @@
             {
                 id: "def-2",
                 title: "Ultra-Wide Curved Monitor 34\"",
-                price: 450.00,
+                price: 4500.00,
                 seller_name: "Workspace Lab",
                 image_url: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=600&q=80",
                 description: "144Hz 1ms curved gaming monitor with HDR support and ultra-narrow bezels."
@@ -242,7 +241,7 @@
             {
                 id: "def-3",
                 title: "Wireless Noise-Canceling Headphones",
-                price: 199.00,
+                price: 1990.00,
                 seller_name: "AudioPhile",
                 image_url: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80",
                 description: "Premium active noise cancelling over-ear headphones with 30-hour battery life."
@@ -250,7 +249,7 @@
             {
                 id: "def-4",
                 title: "Minimalist Felt Desk Mat",
-                price: 25.00,
+                price: 250.00,
                 seller_name: "MinimalSetup",
                 image_url: "https://images.unsplash.com/photo-1616440342903-c45f5a6320a2?auto=format&fit=crop&w=600&q=80",
                 description: "Large 900x400mm anti-slip desk pad designed for smooth mouse control."
@@ -258,7 +257,7 @@
             {
                 id: "def-5",
                 title: "Adjustable Aluminum Monitor Arm",
-                price: 65.00,
+                price: 650.00,
                 seller_name: "ErgoStudio",
                 image_url: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=600&q=80",
                 description: "Heavy-duty gas spring monitor mount with full motion rotation and cable management."
@@ -357,7 +356,7 @@
                         </div>
                     </div>
                     <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-slate-800/50 mt-4">
-                        <span class="text-xl font-extrabold text-white">$${parseFloat(p.price).toFixed(2)}</span>
+                        <span class="text-xl font-extrabold text-white">₱${parseFloat(p.price).toFixed(2)}</span>
                         <button onclick="addToCart('${p.id}')" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition shadow-md shadow-indigo-600/20">
                             Add to Cart 🛒
                         </button>
@@ -437,7 +436,7 @@
 
             if (cart.length === 0) {
                 container.innerHTML = `<p class="text-slate-500 text-xs text-center py-8">Your cart is currently empty.</p>`;
-                totalEl.textContent = "$0.00";
+                totalEl.textContent = "₱0.00";
                 return;
             }
 
@@ -454,14 +453,14 @@
                     <img src="${item.image_url}" alt="${item.title}" class="w-12 h-12 rounded-lg object-cover border border-slate-800">
                     <div class="flex-1 min-w-0">
                         <h4 class="text-xs font-bold text-white truncate">${item.title}</h4>
-                        <p class="text-xs text-indigo-400 font-semibold">$${itemPrice.toFixed(2)}</p>
+                        <p class="text-xs text-indigo-400 font-semibold">₱${itemPrice.toFixed(2)}</p>
                     </div>
                     <button onclick="removeFromCart(${index})" class="text-xs text-red-400 hover:text-red-300 px-2.5 py-1 bg-red-500/10 rounded-lg border border-red-500/20 transition">Remove</button>
                 `;
                 container.appendChild(itemEl);
             });
 
-            totalEl.textContent = `$${total.toFixed(2)}`;
+            totalEl.textContent = `₱${total.toFixed(2)}`;
         }
 
         function startCheckout() {
@@ -483,23 +482,61 @@
                 row.className = "flex justify-between items-center text-xs text-slate-300 py-1";
                 row.innerHTML = `
                     <span class="truncate pr-2">${item.title}</span>
-                    <span class="font-bold text-indigo-400">$${price.toFixed(2)}</span>
+                    <span class="font-bold text-indigo-400">₱${price.toFixed(2)}</span>
                 `;
                 summaryContainer.appendChild(row);
             });
 
-            totalEl.textContent = `$${total.toFixed(2)}`;
+            totalEl.textContent = `₱${total.toFixed(2)}`;
             
             toggleCart();
             document.getElementById('checkout-modal').classList.remove('hidden');
         }
 
-        function handlePlaceOrder(e) {
+        async function handlePlaceOrder(e) {
             e.preventDefault();
-            alert("🎉 Order placed successfully! Thank you for your purchase.");
-            cart = [];
-            updateCartBadge();
-            closeCheckoutModal();
+            const paymentMethod = document.getElementById('payment-method-select').value;
+            const submitBtn = document.getElementById('checkout-submit-btn');
+
+            if (paymentMethod === 'cod') {
+                alert("🎉 Order placed successfully via Cash on Delivery!");
+                cart = [];
+                updateCartBadge();
+                closeCheckoutModal();
+                return;
+            }
+
+            // Handle PayMongo standard checkout session flow
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerText = "Redirecting to PayMongo...";
+
+                const totalAmount = cart.reduce((sum, item) => sum + parseFloat(item.price), 0);
+
+                const response = await fetch('/api/paymongo', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        items: cart,
+                        totalAmount: totalAmount
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.checkoutUrl) {
+                    window.location.href = data.checkoutUrl;
+                } else {
+                    alert(data.error || "Failed to create payment session. Please try again.");
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = "Confirm & Place Order ✨";
+                }
+            } catch (err) {
+                console.error("PayMongo Error:", err);
+                alert("An error occurred while connecting to the payment server.");
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Confirm & Place Order ✨";
+            }
         }
 
         function closeCheckoutModal() {
