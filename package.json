@@ -2,6 +2,7 @@
   "name": "community-marketplace",
   "version": "1.0.0",
   "description": "A modern static marketplace web app with Supabase authentication and product listing.",
+  "type": "module",
   "main": "index.html",
   "scripts": {
     "start": "serve .",
