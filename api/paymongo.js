@@ -29,7 +29,7 @@ export default async function handler(req, res) {
               name: item.title,
               quantity: 1
             })),
-            payment_method_types: ['card', 'gcash', 'paymaya', 'grab_pay'],
+            payment_method_types: ['qrph', 'gcash', 'paymaya', 'card', 'grab_pay'],
             success_url: 'https://geno-three.vercel.app/',
             cancel_url: 'https://geno-three.vercel.app/'
           }
